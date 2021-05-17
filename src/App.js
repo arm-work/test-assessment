@@ -7,10 +7,15 @@ import Dashboard from './Dashboard';
 import authProvider from './Auth';
 import PostIcon from "@material-ui/icons/Book";
 import UserIcon from "@material-ui/icons/Group";
+import NotFound from './NotFound';
+import Menu from './Menu';
 
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
+// import dataProvider from './DataProvider';
+
+
 const App = () => (
-  <Admin dashboard={Dashboard} authProvider={authProvider} dataProvider={dataProvider}>
+  <Admin dashboard={Dashboard} menu={Menu} catchAll={NotFound} authProvider={authProvider} dataProvider={dataProvider}>
     <Resource
       name="posts"
       list={PostList}
