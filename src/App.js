@@ -14,6 +14,11 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import bitcoinRateReducer from './Reducer/BitcoinReducer';
 import bitcoinSaga from './Sagas/BitcoinSagas';
 import customRoutes from './Routes';
+import { createBrowserHistory  } from 'history';
+import { Provider } from 'react-redux';
+import createAdminStore from './createStore';
+
+const history = createBrowserHistory();
 
 const dataProvider = jsonServerProvider("https://jsonplaceholder.typicode.com");
 // import dataProvider from './DataProvider';
@@ -29,7 +34,21 @@ const initialState = () => ({
   grid: localStorage.getItem('grid'),
 });
 
+const Ready = () => (
+  <div>
+      <h1>User Posts Are Loaded</h1>
+      <p>You can now view posts</p>
+  </div>
+)
+
 const App = () => (
+  <Provider
+  store={createAdminStore({
+      authProvider,
+      dataProvider,
+      history,
+  })}
+>
   <Admin
     layout={MyLayout}
     dashboard={Dashboard}
@@ -42,6 +61,8 @@ const App = () => (
     customSagas={[ bitcoinSaga ]}
     customRoutes={customRoutes}
     initialState={initialState}
+    history={history}
+    ready={Ready}
   >
     <Resource
       name="Posts"
@@ -52,6 +73,7 @@ const App = () => (
     />
     <Resource name="Users" list={UserList} icon={UserIcon} />
   </Admin>
+  </Provider>
 );
 
 export default App;
